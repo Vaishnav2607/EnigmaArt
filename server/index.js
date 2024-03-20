@@ -1,7 +1,7 @@
 import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
-import mongoose from "mongoose";
+import connectDB from "./mongodb/connect.js";
 dotenv.config();
 
 const app = express();
@@ -12,6 +12,11 @@ app.get('/', async (req,res) => {
     res.send("Hello from EnigmaAI");
 })
 const startServer = async () =>{
-    app.listen(8080, () => console.log("Server is running on port 8080"));
+    try {
+        connectDB(process.env.MONGO_URL);
+        app.listen(8080, () => console.log("Server is running on port 8080"));
+    } catch (error) {
+        console.log(error);
+    }
 }
 startServer();
